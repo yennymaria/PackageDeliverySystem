@@ -19,7 +19,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 IdentificationNumber = input.Documento.ToString(),
                 CellPhone = input.Telefono.ToString(),
                 Email = input.Correo,
-                DocumentType = input.Id_TipoDocumento
+                Id_DocumentType = input.Id_TipoDocumento
             };
         }
 
@@ -45,7 +45,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 Documento = int.Parse(input.IdentificationNumber),
                 Telefono = int.Parse(input.CellPhone),
                 Correo = input.Email,
-                Id_TipoDocumento = input.DocumentType
+                Id_TipoDocumento = input.Id_DocumentType
             };
         }
 

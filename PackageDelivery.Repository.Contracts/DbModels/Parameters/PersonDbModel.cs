@@ -10,7 +10,7 @@
         public string IdentificationNumber { get; set; }
         public string CellPhone { get; set; }
         public string Email { get; set; }
-        public int DocumentType { get; set; }
+        public int Id_DocumentType { get; set; }
        
     }
 }

@@ -108,8 +108,15 @@
       <DependentUpon>PackageDeliveryDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Mappers\DbModelMapperBase.cs" />
+    <Compile Include="Mappers\Parameters\CityRepositoryMapper.cs" />
+    <Compile Include="Mappers\Parameters\DepartmentRepositoryMapper.cs" />
     <Compile Include="Mappers\Parameters\DocumentTypeRepositoryMapper.cs" />
+    <Compile Include="Mappers\Parameters\OfficeRepositoryMapper.cs" />
+    <Compile Include="Mappers\Parameters\PackageRepositoryMapper.cs" />
     <Compile Include="Mappers\Parameters\PersonRepositoryMapper.cs" />
+    <Compile Include="Mappers\Parameters\TransportTypeRepositoryMapper.cs" />
+    <Compile Include="Mappers\Parameters\VehicleRepositoryMapper.cs" />
+    <Compile Include="Mappers\Parameters\WarehouseRepositoryMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

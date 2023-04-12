@@ -41,7 +41,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mappers\Core\DeliveryApplicationMapper.cs" />
+    <Compile Include="Mappers\Core\DeliveryStatusApplicationMapper.cs" />
+    <Compile Include="Mappers\Core\PackageHistoryApplicationMapper.cs" />
+    <Compile Include="Mappers\DTOMapperBase.cs" />
+    <Compile Include="Mappers\Parameters\AddressApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\OfficeApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\VehicleApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\CityApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\DepartmentApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\PackageApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\TransportTypeApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\WarehouseApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\DocumentTypeApplicationMapper.cs" />
+    <Compile Include="Mappers\Parameters\PersonApplicationMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PackageDelivery.Application.Contracts\PackageDelivery.Application.Contracts.csproj">
+      <Project>{1e748393-bc5b-4ab0-b2ad-d958f24fd745}</Project>
+      <Name>PackageDelivery.Application.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PackageDelivery.Repository.Contracts\PackageDelivery.Repository.Contracts.csproj">
+      <Project>{74484209-3bc0-4aa1-b3e1-6a571b7692a5}</Project>
+      <Name>PackageDelivery.Repository.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Implementation\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

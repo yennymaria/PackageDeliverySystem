@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PackageDelivery.GUI.Models.Parameters
 {
-    public class CityModel
+    public class VehicleModel
     {
         public long Id { get; set; }
         [Required]
-        [DisplayName("Ciudad")]
-        public string Name { get; set; }
-        [DisplayName("Departamento")]
-        public long Id_Department { get; set; }
+        [DisplayName("Placa")]
+        public string Plate { get; set; }
+        [DisplayName("Tipo de Transporte")]
+        public long IdTransportType { get; set; }
     }
 }

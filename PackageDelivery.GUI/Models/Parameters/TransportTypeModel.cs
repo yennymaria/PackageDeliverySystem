@@ -3,11 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PackageDelivery.GUI.Models.Parameters
 {
-    public class DeparmentModel
+    public class TransportTypeModel
     {
         public long Id { get; set; }
         [Required]
-        [DisplayName("Departamento")]
+        [DisplayName("Tipo de Transporte")]
         public string Name { get; set; }
+
     }
+     
 }

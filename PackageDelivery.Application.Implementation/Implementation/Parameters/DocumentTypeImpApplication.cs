@@ -1,8 +1,9 @@
 ﻿using PackageDelivery.Application.Contracts.DTO.Parameters;
 using PackageDelivery.Application.Contracts.Interfaces.Parameters;
+using PackageDelivery.Application.Implementation.Mappers.Parameters;
+using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
 using PackageDelivery.Repository.Implementation.Parameters;
-
 using System;
 using System.Collections.Generic;
 
@@ -11,28 +12,35 @@ namespace PackageDelivery.Application.Implementation.Implementation.Parameters
     public class DocumentTypeImpApplication : IDocumentTypeApplication
     {
         IDocumentTypeRepository _repository = new DocumentTypeImpRepository();
-
-        DocumentTypeDTO IDocumentTypeApplication.createRecord(DocumentTypeDTO record)
+        public DocumentTypeDTO createRecord(DocumentTypeDTO record)
         {
             throw new NotImplementedException();
         }
 
-        bool IDocumentTypeApplication.deleteRecordById(int id)
+        public bool deleteRecordById(int id)
         {
-            throw new NotImplementedException();
+            return _repository.deleteRecordById(id);
         }
 
-        DocumentTypeDTO IDocumentTypeApplication.getRecordById(int id)
+        public DocumentTypeDTO getRecordById(int id)
         {
-            throw new NotImplementedException();
+            DocumentTypeApplicationMapper mapper = new DocumentTypeApplicationMapper();
+            DocumentTypeDbModel dbModel = _repository.getRecordById(id);
+            if (dbModel == null)
+            {
+                return null;
+            }
+            return mapper.DbModelToDTOMapper(dbModel);
         }
 
-        IEnumerable<DocumentTypeDTO> IDocumentTypeApplication.getRecordList(string filter)
+        public IEnumerable<DocumentTypeDTO> getRecordList(string filter)
         {
-            throw new NotImplementedException();
+            DocumentTypeApplicationMapper mapper = new DocumentTypeApplicationMapper();
+            IEnumerable<DocumentTypeDbModel> dbModelList = _repository.getRecordsList(filter);
+            return mapper.DbModelToDTOMapper(dbModelList);
         }
 
-        DocumentTypeDTO IDocumentTypeApplication.updateRecord(DocumentTypeDTO record)
+        public DocumentTypeDTO updateRecord(DocumentTypeDTO record)
         {
             throw new NotImplementedException();
         }

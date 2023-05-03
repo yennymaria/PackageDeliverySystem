@@ -176,13 +176,34 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\Core\PackageHistoryGUIMapper.cs" />
+    <Compile Include="Mappers\Core\DeliveryGUIMapper.cs" />
+    <Compile Include="Mappers\Core\DeliveryStatusGUIMapper.cs" />
     <Compile Include="Mappers\ModelMapperBase.cs" />
+    <Compile Include="Mappers\Parameters\AddressGUIMapper.cs" />
+    <Compile Include="Mappers\Parameters\TransportTypeGUIMapper.cs" />
+    <Compile Include="Mappers\Parameters\VehicleGUIMapper.cs" />
+    <Compile Include="Mappers\Parameters\PackageGUIMapper.cs" />
+    <Compile Include="Mappers\Parameters\WarehouseGUIMapper.cs" />
+    <Compile Include="Mappers\Parameters\OfficeGUIMapper.cs" />
+    <Compile Include="Mappers\Parameters\CityGUIMapper.cs" />
+    <Compile Include="Mappers\Parameters\DepartmentGuiMapper.cs" />
     <Compile Include="Mappers\Parameters\DocumentTypeGUIMapper.cs" />
     <Compile Include="Mappers\Parameters\PersonGUIMapper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Core\DeliveryModel.cs" />
+    <Compile Include="Models\Core\DeliveryStatusModel.cs" />
+    <Compile Include="Models\Core\PackageHistoryModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Parameters\DeparmentModel.cs" />
+    <Compile Include="Models\Parameters\CityModel.cs" />
+    <Compile Include="Models\Parameters\AddressModel.cs" />
+    <Compile Include="Models\Parameters\PackageModel.cs" />
+    <Compile Include="Models\Parameters\VehicleModel.cs" />
+    <Compile Include="Models\Parameters\WarehouseModel.cs" />
+    <Compile Include="Models\Parameters\OfficeModel.cs" />
+    <Compile Include="Models\Parameters\TransportTypeModel.cs" />
+    <Compile Include="Models\Parameters\DepartmentModel.cs" />
     <Compile Include="Models\Parameters\DocumentTypeModel.cs" />
     <Compile Include="Models\Parameters\PersonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -249,10 +270,14 @@
     <Content Include="Views\DocumentType\Details.cshtml" />
     <Content Include="Views\DocumentType\Edit.cshtml" />
     <Content Include="Views\DocumentType\Index.cshtml" />
+    <Content Include="Views\Person\Create.cshtml" />
+    <Content Include="Views\Person\Delete.cshtml" />
+    <Content Include="Views\Person\Details.cshtml" />
+    <Content Include="Views\Person\Edit.cshtml" />
+    <Content Include="Views\Person\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Person\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

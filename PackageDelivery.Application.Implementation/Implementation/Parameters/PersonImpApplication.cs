@@ -1,8 +1,9 @@
 ﻿using PackageDelivery.Application.Contracts.DTO.Parameters;
 using PackageDelivery.Application.Contracts.Interfaces.Parameters;
+using PackageDelivery.Application.Implementation.Mappers.Parameters;
+using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
 using PackageDelivery.Repository.Implementation.Parameters;
-
 using System;
 using System.Collections.Generic;
 
@@ -11,28 +12,35 @@ namespace PackageDelivery.Application.Implementation.Implementation.Parameters
     public class PersonImpApplication : IPersonApplication
     {
         IPersonRepository _repository = new PersonImpRepository();
-
-        PersonDTO IPersonApplication.createRecord(PersonDTO record)
+        public PersonDTO createRecord(PersonDTO record)
         {
             throw new NotImplementedException();
         }
 
-        bool IPersonApplication.deleteRecordById(int id)
+        public bool deleteRecordById(int id)
         {
-            throw new NotImplementedException();
+            return _repository.deleteRecordById(id);
         }
 
-        PersonDTO IPersonApplication.getRecordById(int id)
+        public PersonDTO getRecordById(int id)
         {
-            throw new NotImplementedException();
+            PersonApplicationMapper mapper = new PersonApplicationMapper();
+            PersonDbModel dbModel = _repository.getRecordById(id);
+            if (dbModel == null)
+            {
+                return null;
+            }
+            return mapper.DbModelToDTOMapper(dbModel);
         }
 
-        IEnumerable<PersonDTO> IPersonApplication.getRecordList(string filter)
+        public IEnumerable<PersonDTO> getRecordList(string filter)
         {
-            throw new NotImplementedException();
+            PersonApplicationMapper mapper = new PersonApplicationMapper();
+            IEnumerable<PersonDbModel> dbModelList = _repository.getRecordsList(filter);
+            return mapper.DbModelToDTOMapper(dbModelList);
         }
 
-        PersonDTO IPersonApplication.updateRecord(PersonDTO record)
+        public PersonDTO updateRecord(PersonDTO record)
         {
             throw new NotImplementedException();
         }

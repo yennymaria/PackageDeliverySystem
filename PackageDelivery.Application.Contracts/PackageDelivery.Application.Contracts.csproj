@@ -54,10 +54,9 @@
     <Compile Include="DTO\Parameters\TransportTypeDTO.cs" />
     <Compile Include="DTO\Parameters\VehicleDTO.cs" />
     <Compile Include="DTO\Parameters\WarehouseDTO.cs" />
+    <Compile Include="Interfaces\Parameters\IDocumentTypeApplication.cs" />
+    <Compile Include="Interfaces\Parameters\IPersonApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

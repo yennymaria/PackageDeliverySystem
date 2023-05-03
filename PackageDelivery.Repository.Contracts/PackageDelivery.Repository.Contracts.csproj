@@ -54,10 +54,9 @@
     <Compile Include="DbModels\Parameters\TransportTypeDbModel.cs" />
     <Compile Include="DbModels\Parameters\VehicleDbModel.cs" />
     <Compile Include="DbModels\Parameters\WarehouseDbModel.cs" />
+    <Compile Include="Interfaces\Parameters\IDocumentTypeRepository.cs" />
+    <Compile Include="Interfaces\Parameters\IPersonRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

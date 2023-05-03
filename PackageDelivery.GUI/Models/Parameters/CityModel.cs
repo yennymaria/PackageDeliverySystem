@@ -1,14 +1,13 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace PackageDelivery.GUI.Models.Parameters
 {
-    public class DocumentTypeModel
+    public class CityModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required]
-        [DisplayName("Tipo de Documento")]
+        [DisplayName("Ciudad")]
         public string Name { get; set; }
     }
 }

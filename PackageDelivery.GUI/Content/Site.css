@@ -28,3 +28,16 @@ textarea {
     background-color: #777;
     border-color: #fff
 }
+
+﻿.success-action {
+    background: green;
+}
+
+.warning-action {
+    background: orange;
+}
+
+.divMessage {
+    width: 100%;
+}
+

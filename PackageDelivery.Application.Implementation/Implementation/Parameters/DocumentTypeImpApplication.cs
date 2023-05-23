@@ -14,7 +14,14 @@ namespace PackageDelivery.Application.Implementation.Implementation.Parameters
         IDocumentTypeRepository _repository = new DocumentTypeImpRepository();
         public DocumentTypeDTO createRecord(DocumentTypeDTO record)
         {
-            throw new NotImplementedException();
+            DocumentTypeApplicationMapper mapper = new DocumentTypeApplicationMapper();
+            DocumentTypeDbModel dbModel = mapper.DTOToDbModelMapper(record);
+            DocumentTypeDbModel response = this._repository.createRecord(dbModel);
+            if(response == null)
+            {
+                return null;
+            }
+            return mapper.DbModelToDTOMapper(response);
         }
 
         public bool deleteRecordById(int id)
@@ -42,7 +49,14 @@ namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 
         public DocumentTypeDTO updateRecord(DocumentTypeDTO record)
         {
-            throw new NotImplementedException();
+            DocumentTypeApplicationMapper mapper = new DocumentTypeApplicationMapper();
+            DocumentTypeDbModel dbModel = mapper.DTOToDbModelMapper(record);
+            DocumentTypeDbModel response = this._repository.updateRecord(dbModel);
+            if (response == null)
+            {
+                return null;
+            }
+            return mapper.DbModelToDTOMapper(response);
         }
     }
 }

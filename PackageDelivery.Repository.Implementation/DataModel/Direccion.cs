@@ -31,8 +31,8 @@ namespace PackageDelivery.Repository.Implementation.DataModel
         public long Id_Municipio { get; set; }
     
         public virtual Municipio Municipio { get; set; }
-        public virtual Persona Persona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Envio> Envio { get; set; }
+        public virtual Persona Persona { get; set; }
     }
 }

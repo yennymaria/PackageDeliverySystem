@@ -26,7 +26,7 @@ namespace PackageDelivery.Repository.Implementation.DataModel
         public virtual Direccion Direccion { get; set; }
         public virtual EstadoEnvio EstadoEnvio { get; set; }
         public virtual Paquete Paquete { get; set; }
-        public virtual Persona Persona { get; set; }
         public virtual TipoTransporte TipoTransporte { get; set; }
+        public virtual Persona Persona { get; set; }
     }
 }

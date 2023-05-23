@@ -1,0 +1,74 @@
+﻿@model PackageDelivery.GUI.Models.Core.DeliveryModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DeliveryModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeliveryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id_DestinationAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_DestinationAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id_Package)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_Package)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id_DeliveryStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_DeliveryStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id_Sender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_Sender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id_TransportType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_TransportType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

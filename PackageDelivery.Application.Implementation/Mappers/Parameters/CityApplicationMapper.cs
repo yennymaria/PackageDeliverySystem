@@ -12,7 +12,8 @@ namespace PackageDelivery.Application.Implementation.Mappers.Parameters
             {
                 Id = input.Id,
                 Name = input.Name,
-                Id_Department = input.Id_Department
+                Id_Department = input.Id_Department,
+                DepartmentName = input.DepartmentName
             };
         }
 

@@ -26,6 +26,19 @@
                     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
                 </ul>
+                @if (@ViewBag.ClassName != null)
+                {
+                    <div id="divMessageId" class="divMessage @ViewBag.ClassName">
+                        <strong>@ViewBag.Message</strong>
+                    </div>
+                    <script type="text/javascript">
+                        setTimeout(function () {
+                            //alert("")
+                            //document.querySelector("#divMessageId").style.display = "none";
+                            $("#divMessageId").hide(    );
+                        }, 3000);
+                    </script>
+                }
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

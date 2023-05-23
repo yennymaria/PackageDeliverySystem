@@ -4,6 +4,7 @@ using PackageDelivery.Repository.Implementation.DataModel;
 using PackageDelivery.Repository.Implementation.Mappers.Parameters;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace PackageDelivery.Repository.Implementation.Parameters
@@ -12,7 +13,20 @@ namespace PackageDelivery.Repository.Implementation.Parameters
     {
         public DocumentTypeDbModel createRecord(DocumentTypeDbModel record)
         {
-            throw new NotImplementedException();
+            using (PackageDeliveryEntities db = new PackageDeliveryEntities())
+            {
+                var docType = db.TipoDocumento.Where(x => x.Nombre.ToUpper().Trim().Equals(record.Name.ToUpper().Trim())).FirstOrDefault();
+                if (docType != null)
+                {
+                    return null;
+                }
+                DocumentTypeRepositoryMapper mapper = new DocumentTypeRepositoryMapper();
+                TipoDocumento dt = mapper.DbModelToDataBaseMapper(record);
+                db.TipoDocumento.Add(dt);
+                db.SaveChanges();
+                return mapper.DataBaseToDbModelMapper(dt);
+
+            }
         }
 
         /// <summary>
@@ -78,7 +92,23 @@ namespace PackageDelivery.Repository.Implementation.Parameters
 
         public DocumentTypeDbModel updateRecord(DocumentTypeDbModel record)
         {
-            throw new NotImplementedException();
+            using (PackageDeliveryEntities db = new PackageDeliveryEntities())
+            {
+                TipoDocumento td = db.TipoDocumento.Where(x => x.Id == record.Id).FirstOrDefault();
+                if (td == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    td.Nombre = record.Name;
+                    db.Entry(td).State = EntityState.Modified;
+                    db.SaveChanges();
+                    DocumentTypeRepositoryMapper mapper = new DocumentTypeRepositoryMapper();
+
+                    return mapper.DataBaseToDbModelMapper(td);
+                }
+            }
         }
     }
 }

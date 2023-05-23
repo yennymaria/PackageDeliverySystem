@@ -34,10 +34,10 @@ namespace PackageDelivery.Repository.Implementation.DataModel
         public virtual DbSet<Municipio> Municipio { get; set; }
         public virtual DbSet<Oficina> Oficina { get; set; }
         public virtual DbSet<Paquete> Paquete { get; set; }
-        public virtual DbSet<Persona> Persona { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TipoDocumento> TipoDocumento { get; set; }
         public virtual DbSet<TipoTransporte> TipoTransporte { get; set; }
         public virtual DbSet<vehiculo> vehiculo { get; set; }
+        public virtual DbSet<Persona> Persona { get; set; }
     }
 }

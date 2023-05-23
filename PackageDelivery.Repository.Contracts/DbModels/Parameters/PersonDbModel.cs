@@ -11,6 +11,7 @@
         public string CellPhone { get; set; }
         public string Email { get; set; }
         public int Id_DocumentType { get; set; }
-       
+        public string DocumentTypeName { get; set; }
+
     }
 }

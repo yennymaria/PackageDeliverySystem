@@ -11,7 +11,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
             return new DocumentTypeDbModel()
             {
                 Id = input.Id,
-                Name = input.Nombre
+                Name = input.Nombre.Trim()
             };
         }
 

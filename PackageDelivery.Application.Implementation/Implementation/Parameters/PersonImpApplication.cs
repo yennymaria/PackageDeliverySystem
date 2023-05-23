@@ -4,8 +4,8 @@ using PackageDelivery.Application.Implementation.Mappers.Parameters;
 using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
 using PackageDelivery.Repository.Implementation.Parameters;
-using System;
 using System.Collections.Generic;
+using System;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
@@ -14,7 +14,14 @@ namespace PackageDelivery.Application.Implementation.Implementation.Parameters
         IPersonRepository _repository = new PersonImpRepository();
         public PersonDTO createRecord(PersonDTO record)
         {
-            throw new NotImplementedException();
+            PersonApplicationMapper mapper = new PersonApplicationMapper();
+            PersonDbModel dbModel = mapper.DTOToDbModelMapper(record);
+            PersonDbModel response = this._repository.createRecord(dbModel);
+            if (response == null)
+            {
+                return null;
+            }
+            return mapper.DbModelToDTOMapper(response);
         }
 
         public bool deleteRecordById(int id)
@@ -42,7 +49,14 @@ namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 
         public PersonDTO updateRecord(PersonDTO record)
         {
-            throw new NotImplementedException();
+            PersonApplicationMapper mapper = new PersonApplicationMapper();
+            PersonDbModel dbModel = mapper.DTOToDbModelMapper(record);
+            PersonDbModel response = this._repository.updateRecord(dbModel);
+            if (response == null)
+            {
+                return null;
+            }
+            return mapper.DbModelToDTOMapper(response);
         }
     }
 }

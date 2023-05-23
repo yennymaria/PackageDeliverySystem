@@ -1,0 +1,58 @@
+﻿@model PackageDelivery.GUI.Models.Core.PackageHistoryModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PackageHistoryModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AdmissionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdmissionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepurateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepurateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id_Package)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_Package)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id_Warehouse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_Warehouse)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

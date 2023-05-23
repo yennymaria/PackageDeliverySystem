@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PackageDelivery.GUI.Mappers.Parameters
 {
-    public class DepartmentGuiMapper : ModelMapperBase<DepartmentModel, DepartmentDTO>
+    public class DepartmentGUIMapper : ModelMapperBase<DepartmentModel, DepartmentDTO>
     {
         public override DepartmentModel DTOToModelMapper(DepartmentDTO input)
         {

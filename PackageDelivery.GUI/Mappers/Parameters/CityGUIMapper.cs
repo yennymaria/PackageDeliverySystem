@@ -13,7 +13,8 @@ namespace PackageDelivery.GUI.Mappers.Parameters
             {
                 Id = input.Id,
                 Name = input.Name,
-                Id_Department = input.Id_Department
+                Id_Department = input.Id_Department,
+                DepartmentName = input.DepartmentName
             };
         }
 

@@ -26,8 +26,8 @@ namespace PackageDelivery.Repository.Implementation.DataModel
         public string OtrosNombres { get; set; }
         public string PrimerApellido { get; set; }
         public string SegundoApellido { get; set; }
-        public int Documento { get; set; }
-        public int Telefono { get; set; }
+        public string Documento { get; set; }
+        public string Telefono { get; set; }
         public string Correo { get; set; }
         public int Id_TipoDocumento { get; set; }
     

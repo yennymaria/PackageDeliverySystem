@@ -1,45 +1,77 @@
-﻿using System;
+﻿using Microsoft.Reporting.WebForms;
+using PackageDelivery.Application.Contracts.DTO.Core;
+using PackageDelivery.Application.Contracts.DTO.Parameters;
+using PackageDelivery.Application.Contracts.Interfaces.Core;
+using PackageDelivery.Application.Contracts.Interfaces.Parameters;
+using PackageDelivery.Application.Implementation.Implementation.Core;
+using PackageDelivery.Application.Implementation.Implementation.Parameters;
+using PackageDelivery.GUI.Helpers;
+using PackageDelivery.GUI.Implementation.Mappers.Parameters;
+using PackageDelivery.GUI.Mappers.Core;
+using PackageDelivery.GUI.Mappers.Parameters;
+using PackageDelivery.GUI.Models.Core;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using PackageDelivery.GUI.Models;
-using PackageDelivery.GUI.Models.Core;
 
-namespace PackageDelivery.GUI.Controllers.Core
+namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class DeliveryController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IDeliveryApplication _app = new DeliveryImpApplication();
+        private IAddressApplication _dtapp = new AddressImpApplication();
+        private IPackageApplication _dt2app = new PackageImpApplication();
+        private IDeliveryStatusApplication _dt3app = new DeliveryStatusImpApplication();
+        private IPersonApplication _dt4app = new PersonImpApplication();
+        private ITransportTypeApplication _dt5app = new TransportTypeImpApplication();
 
         // GET: Delivery
-        public ActionResult Index()
+        public ActionResult Index(string filter = "")
         {
-            return View(db.DeliveryModels.ToList());
+            DeliveryGUIMapper mapper = new DeliveryGUIMapper();
+            IEnumerable<DeliveryModel> list = mapper.DTOToModelMapper(_app.getRecordList(filter));
+            return View(list);
         }
 
         // GET: Delivery/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeliveryModel deliveryModel = db.DeliveryModels.Find(id);
-            if (deliveryModel == null)
+            DeliveryGUIMapper mapper = new DeliveryGUIMapper();
+            DeliveryModel DeliveryModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (DeliveryModel == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryModel);
+            return View(DeliveryModel);
         }
 
         // GET: Delivery/Create
         public ActionResult Create()
         {
-            return View();
+            IEnumerable<AddressDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            IEnumerable<PackageDTO> dt2List = this._dt2app.getRecordList(string.Empty);
+            IEnumerable<DeliveryStatusDTO> dt3List = this._dt3app.getRecordList(string.Empty);
+            IEnumerable<PersonDTO> dt4List = this._dt4app.getRecordList(string.Empty);
+            IEnumerable<TransportTypeDTO> dt5List = this._dt5app.getRecordList(string.Empty);
+            AddressGUIMapper dtMapper = new AddressGUIMapper();
+            PackageGUIMapper dt2Mapper = new PackageGUIMapper();
+            DeliveryStatusGUIMapper dt3Mapper = new DeliveryStatusGUIMapper();
+            PersonGUIMapper dt4Mapper = new PersonGUIMapper();
+            TransportTypeGUIMapper dt5Mapper = new TransportTypeGUIMapper();
+            DeliveryModel model = new DeliveryModel()
+            {
+                DestinationAddressList = dtMapper.DTOToModelMapper(dtList),
+                PackageList = dt2Mapper.DTOToModelMapper(dt2List),
+                DeliveryStatusList = dt3Mapper.DTOToModelMapper(dt3List),
+                SenderList = dt4Mapper.DTOToModelMapper(dt4List),
+                TransportTypeList = dt5Mapper.DTOToModelMapper(dt5List),
+            };
+            return View(model);
         }
 
         // POST: Delivery/Create
@@ -47,31 +79,59 @@ namespace PackageDelivery.GUI.Controllers.Core
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,DeliveryDate,Price,Id_DestinationAddress,Id_Package,Id_DeliveryStatus,Id_Sender,Id_TransportType")] DeliveryModel deliveryModel)
+        public ActionResult Create([Bind(Include = "Id,DeliveryDate,Price,Id_DestinationAddress," +
+            "Id_Package,Id_DeliveryStatus,Id_Sender,Id_TransportType")] DeliveryModel DeliveryModel)
         {
             if (ModelState.IsValid)
             {
-                db.DeliveryModels.Add(deliveryModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                DeliveryGUIMapper mapper = new DeliveryGUIMapper();
+                DeliveryDTO response = _app.createRecord(mapper.ModelToDTOMapper(DeliveryModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.ClassName = ActionMessages.warningClass;
+                ViewBag.Message = ActionMessages.alreadyExistsMessage;
+                return View(DeliveryModel);
             }
-
-            return View(deliveryModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(DeliveryModel);
         }
 
         // GET: Delivery/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeliveryModel deliveryModel = db.DeliveryModels.Find(id);
-            if (deliveryModel == null)
+            DeliveryGUIMapper mapper = new DeliveryGUIMapper();
+            DeliveryModel DeliveryModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+
+            IEnumerable<AddressDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            IEnumerable<PackageDTO> dt2List = this._dt2app.getRecordList(string.Empty);
+            IEnumerable<DeliveryStatusDTO> dt3List = this._dt3app.getRecordList(string.Empty);
+            IEnumerable<PersonDTO> dt4List = this._dt4app.getRecordList(string.Empty);
+            IEnumerable<TransportTypeDTO> dt5List = this._dt5app.getRecordList(string.Empty);
+            AddressGUIMapper dtMapper = new AddressGUIMapper();
+            PackageGUIMapper dt2Mapper = new PackageGUIMapper();
+            DeliveryStatusGUIMapper dt3Mapper = new DeliveryStatusGUIMapper();
+            PersonGUIMapper dt4Mapper = new PersonGUIMapper();
+            TransportTypeGUIMapper dt5Mapper = new TransportTypeGUIMapper();
+
+            DeliveryModel.DestinationAddressList = dtMapper.DTOToModelMapper(dtList);
+            DeliveryModel.PackageList = dt2Mapper.DTOToModelMapper(dt2List);
+            DeliveryModel.DeliveryStatusList = dt3Mapper.DTOToModelMapper(dt3List);
+            DeliveryModel.SenderList = dt4Mapper.DTOToModelMapper(dt4List);
+            DeliveryModel.TransportTypeList = dt5Mapper.DTOToModelMapper(dt5List);
+            if (DeliveryModel == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryModel);
+            return View(DeliveryModel);
         }
 
         // POST: Delivery/Edit/5
@@ -79,50 +139,91 @@ namespace PackageDelivery.GUI.Controllers.Core
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,DeliveryDate,Price,Id_DestinationAddress,Id_Package,Id_DeliveryStatus,Id_Sender,Id_TransportType")] DeliveryModel deliveryModel)
+        public ActionResult Edit([Bind(Include = "Id,DeliveryDate,Price,Id_DestinationAddress," +
+            "Id_Package,Id_DeliveryStatus,Id_Sender,Id_TransportType")] DeliveryModel DeliveryModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(deliveryModel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                DeliveryGUIMapper mapper = new DeliveryGUIMapper();
+                DeliveryDTO response = _app.updateRecord(mapper.ModelToDTOMapper(DeliveryModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
             }
-            return View(deliveryModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(DeliveryModel);
         }
 
         // GET: Delivery/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeliveryModel deliveryModel = db.DeliveryModels.Find(id);
-            if (deliveryModel == null)
+            DeliveryGUIMapper mapper = new DeliveryGUIMapper();
+            DeliveryModel DeliveryModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (DeliveryModel == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryModel);
+            return View(DeliveryModel);
         }
 
         // POST: Delivery/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            DeliveryModel deliveryModel = db.DeliveryModels.Find(id);
-            db.DeliveryModels.Remove(deliveryModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            bool response = _app.deleteRecordById(id);
+            if (response)
+            {
+                ViewBag.ClassName = ActionMessages.successClass;
+                ViewBag.Message = ActionMessages.succesMessage;
+                return RedirectToAction("Index");
+            }
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View();
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult Delivery_Report(string format = "PDF")
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            var list = _app.getRecordList(string.Empty);
+            DeliveryGUIMapper mapper = new DeliveryGUIMapper();
+            List<DeliveryModel> recordsList = mapper.DTOToModelMapper(list).ToList();
+            string reportPath = Server.MapPath("~/Reports/rdlcFiles/DeliveriesReport.rdlc");
+            //List<string> dataSets = new List<string> { "CustomerList" };
+            LocalReport lr = new LocalReport();
+
+            lr.ReportPath = reportPath;
+            lr.EnableHyperlinks = true;
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderedBytes;
+            string mimeType, encoding, fileNameExtension;
+
+            ReportDataSource res = new ReportDataSource("DeliveryList", recordsList);
+            lr.DataSources.Add(res);
+
+
+            renderedBytes = lr.Render(
+            format,
+            string.Empty,
+            out mimeType,
+            out encoding,
+            out fileNameExtension,
+            out streams,
+            out warnings
+            );
+
+            return File(renderedBytes, mimeType);
         }
+
     }
 }

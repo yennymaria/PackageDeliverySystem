@@ -95,9 +95,6 @@
     <Compile Include="DataModel\Persona.cs">
       <DependentUpon>PackageDeliveryDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModel\sysdiagrams.cs">
-      <DependentUpon>PackageDeliveryDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataModel\TipoDocumento.cs">
       <DependentUpon>PackageDeliveryDataModel.tt</DependentUpon>
     </Compile>
@@ -107,12 +104,19 @@
     <Compile Include="DataModel\vehiculo.cs">
       <DependentUpon>PackageDeliveryDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Implementation\Core\PackageHistoryImpRepository.cs" />
+    <Compile Include="Implementation\Core\DeliveryImpRespository.cs" />
+    <Compile Include="Implementation\Core\DeliveryStatusImpRepository.cs" />
+    <Compile Include="Implementation\Parameters\AddressImpRepository.cs" />
     <Compile Include="Implementation\Parameters\CityImpRepository.cs" />
     <Compile Include="Implementation\Parameters\DepartmentImpRepository.cs" />
+    <Compile Include="Implementation\Parameters\OfficeImpRepository.cs" />
+    <Compile Include="Implementation\Parameters\PackageImpRepository.cs" />
     <Compile Include="Implementation\Parameters\VehicleImpRepository.cs" />
     <Compile Include="Implementation\Parameters\TransportTypeImpRepository.cs" />
     <Compile Include="Implementation\Parameters\DocumentTypeImpRepository.cs" />
     <Compile Include="Implementation\Parameters\PersonImpRepository.cs" />
+    <Compile Include="Implementation\Parameters\WarehouseImpRepository.cs" />
     <Compile Include="Mappers\Core\DeliveryRepositoryMapper.cs" />
     <Compile Include="Mappers\Core\DeliveryStatusRepositoryMapper.cs" />
     <Compile Include="Mappers\Core\PackageHistoryRepositoryMapper.cs" />
@@ -130,39 +134,36 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="DataModel\PackageDeliveryDataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PackageDeliveryDataModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="DataModel\PackageDeliveryDataModel.edmx.diagram">
       <DependentUpon>PackageDeliveryDataModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PackageDelivery.Repository.Contracts\PackageDelivery.Repository.Contracts.csproj">
+      <Project>{74484209-3bc0-4aa1-b3e1-6a571b7692a5}</Project>
+      <Name>PackageDelivery.Repository.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="DataModel\PackageDeliveryDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PackageDeliveryDataModel.Context.cs</LastGenOutput>
       <DependentUpon>PackageDeliveryDataModel.edmx</DependentUpon>
+      <LastGenOutput>PackageDeliveryDataModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="DataModel\PackageDeliveryDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PackageDeliveryDataModel.edmx</DependentUpon>
       <LastGenOutput>PackageDeliveryDataModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\PackageDelivery.Repository.Contracts\PackageDelivery.Repository.Contracts.csproj">
-      <Project>{74484209-3bc0-4aa1-b3e1-6a571b7692a5}</Project>
-      <Name>PackageDelivery.Repository.Contracts</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

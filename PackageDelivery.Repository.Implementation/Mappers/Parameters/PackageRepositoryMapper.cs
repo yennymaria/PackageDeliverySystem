@@ -11,11 +11,12 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
             return new PackageDbModel()
             {
                 Id = input.Id,
-                Weight = input.Peso.ToString(),
-                Depth = input.Profundidad.ToString(),
-                Width = input.Ancho.ToString(),
-                Height = input.Altura.ToString(),
-                Id_Office = input.Id_Oficina
+                Weight = input.Peso,
+                Depth = input.Profundidad,
+                Width = input.Ancho,
+                Height = input.Altura,
+                Id_Office = input.Id_Oficina,
+                OfficeName = input.Oficina.Nombre
             };
         }
 
@@ -34,10 +35,10 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
             return new Paquete()
             {
                 Id = input.Id,
-                Peso = int.Parse(input.Weight),
-                Profundidad = int.Parse(input.Depth),
-                Ancho = int.Parse(input.Width),
-                Altura = int.Parse(input.Height),
+                Peso = input.Weight,
+                Profundidad = input.Depth,
+                Ancho = input.Width,
+                Altura = input.Height,
                 Id_Oficina = input.Id_Office
             };
         }

@@ -44,19 +44,19 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Id_DestinationAddress)
+            @Html.DisplayFor(modelItem => item.DestinationAddressName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Id_Package)
+            @Html.DisplayFor(modelItem => item.PackageName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Id_DeliveryStatus)
+            @Html.DisplayFor(modelItem => item.DeliveryStatusName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Id_Sender)
+            @Html.DisplayFor(modelItem => item.SenderName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Id_TransportType)
+            @Html.DisplayFor(modelItem => item.TransportTypeName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

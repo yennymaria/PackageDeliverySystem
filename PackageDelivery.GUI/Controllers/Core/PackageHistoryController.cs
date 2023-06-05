@@ -1,45 +1,71 @@
-﻿using System;
+﻿using PackageDelivery.Application.Contracts.DTO.Parameters;
+using PackageDelivery.Application.Contracts.Interfaces.Parameters;
+using PackageDelivery.Application.Implementation.Implementation.Parameters;
+using PackageDelivery.GUI.Helpers;
+using PackageDelivery.GUI.Implementation.Mappers.Parameters;
+using PackageDelivery.GUI.Models.Parameters;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using PackageDelivery.GUI.Models;
+using System;
+using PackageDelivery.GUI.Mappers.Parameters;
+using PackageDelivery.Application.Contracts.Interfaces.Core;
+using PackageDelivery.Application.Implementation.Implementation.Core;
+using PackageDelivery.GUI.Mappers.Core;
 using PackageDelivery.GUI.Models.Core;
+using PackageDelivery.Application.Contracts.DTO.Core;
+using PackagePackageHistory.GUI.Mappers.Core;
+using System.Linq;
+using Microsoft.Reporting.WebForms;
 
-namespace PackageDelivery.GUI.Controllers.Core
+namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class PackageHistoryController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IPackageHistoryApplication _app = new PackageHistoryImpApplication();
+        private IPackageApplication _dtapp = new PackageImpApplication();
+        private IWarehouseApplication _dt2app = new WarehouseImpApplication();
 
         // GET: PackageHistory
-        public ActionResult Index()
+        public ActionResult Index(string filter = "")
         {
-            return View(db.PackageHistoryModels.ToList());
+            PackageHistoryGUIMapper mapper = new PackageHistoryGUIMapper();
+            IEnumerable<PackageHistoryModel> list = mapper.DTOToModelMapper(_app.getRecordList(filter));
+            return View(list);
         }
 
         // GET: PackageHistory/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PackageHistoryModel packageHistoryModel = db.PackageHistoryModels.Find(id);
-            if (packageHistoryModel == null)
+            PackageHistoryGUIMapper mapper = new PackageHistoryGUIMapper();
+            PackageHistoryModel PackageHistoryModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (PackageHistoryModel == null)
             {
                 return HttpNotFound();
             }
-            return View(packageHistoryModel);
+            return View(PackageHistoryModel);
         }
 
         // GET: PackageHistory/Create
         public ActionResult Create()
         {
-            return View();
+            IEnumerable<PackageDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            IEnumerable<WarehouseDTO> dt2List = this._dt2app.getRecordList(string.Empty);
+
+            PackageGUIMapper dtMapper = new PackageGUIMapper();
+            WarehouseGUIMapper dt2Mapper = new WarehouseGUIMapper();
+           
+            PackageHistoryModel model = new PackageHistoryModel()
+            {
+                PackageList = dtMapper.DTOToModelMapper(dtList),
+                WarehouseList = dt2Mapper.DTOToModelMapper(dt2List),
+                
+            };
+            return View(model);
         }
 
         // POST: PackageHistory/Create
@@ -47,31 +73,51 @@ namespace PackageDelivery.GUI.Controllers.Core
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AdmissionDate,DepurateDate,Description,Id_Package,Id_Warehouse")] PackageHistoryModel packageHistoryModel)
+        public ActionResult Create([Bind(Include = "Id,AdmissionDate," +
+            "DepurateDate,Description,Id_Package,Id_Warehouse")] PackageHistoryModel PackageHistoryModel)
         {
             if (ModelState.IsValid)
             {
-                db.PackageHistoryModels.Add(packageHistoryModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                PackageHistoryGUIMapper mapper = new PackageHistoryGUIMapper();
+                PackageHistoryDTO response = _app.createRecord(mapper.ModelToDTOMapper(PackageHistoryModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.ClassName = ActionMessages.warningClass;
+                ViewBag.Message = ActionMessages.alreadyExistsMessage;
+                return View(PackageHistoryModel);
             }
-
-            return View(packageHistoryModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(PackageHistoryModel);
         }
 
         // GET: PackageHistory/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PackageHistoryModel packageHistoryModel = db.PackageHistoryModels.Find(id);
-            if (packageHistoryModel == null)
+            PackageHistoryGUIMapper mapper = new PackageHistoryGUIMapper();
+            PackageHistoryModel PackageHistoryModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+
+            IEnumerable<PackageDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            IEnumerable<WarehouseDTO> dt2List = this._dt2app.getRecordList(string.Empty);
+
+            PackageGUIMapper dtMapper = new PackageGUIMapper();
+            WarehouseGUIMapper dt2Mapper = new WarehouseGUIMapper();
+
+            PackageHistoryModel.PackageList = dtMapper.DTOToModelMapper(dtList);
+            PackageHistoryModel.WarehouseList = dt2Mapper.DTOToModelMapper(dt2List);
+            if (PackageHistoryModel == null)
             {
                 return HttpNotFound();
             }
-            return View(packageHistoryModel);
+            return View(PackageHistoryModel);
         }
 
         // POST: PackageHistory/Edit/5
@@ -79,50 +125,91 @@ namespace PackageDelivery.GUI.Controllers.Core
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AdmissionDate,DepurateDate,Description,Id_Package,Id_Warehouse")] PackageHistoryModel packageHistoryModel)
+        public ActionResult Edit([Bind(Include = "Id,AdmissionDate,DepurateDate," +
+            "Description,Id_Package,Id_Warehouse")] PackageHistoryModel PackageHistoryModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(packageHistoryModel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                PackageHistoryGUIMapper mapper = new PackageHistoryGUIMapper();
+                PackageHistoryDTO response = _app.updateRecord(mapper.ModelToDTOMapper(PackageHistoryModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
             }
-            return View(packageHistoryModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(PackageHistoryModel);
         }
 
         // GET: PackageHistory/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PackageHistoryModel packageHistoryModel = db.PackageHistoryModels.Find(id);
-            if (packageHistoryModel == null)
+            PackageHistoryGUIMapper mapper = new PackageHistoryGUIMapper();
+            PackageHistoryModel PackageHistoryModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (PackageHistoryModel == null)
             {
                 return HttpNotFound();
             }
-            return View(packageHistoryModel);
+            return View(PackageHistoryModel);
         }
 
         // POST: PackageHistory/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            PackageHistoryModel packageHistoryModel = db.PackageHistoryModels.Find(id);
-            db.PackageHistoryModels.Remove(packageHistoryModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            bool response = _app.deleteRecordById(id);
+            if (response)
+            {
+                ViewBag.ClassName = ActionMessages.successClass;
+                ViewBag.Message = ActionMessages.succesMessage;
+                return RedirectToAction("Index");
+            }
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View();
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult PackageHistory_Report(string format = "PDF")
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            var list = _app.getRecordList(string.Empty);
+            PackageHistoryGUIMapper mapper = new PackageHistoryGUIMapper();
+            List<PackageHistoryModel> recordsList = mapper.DTOToModelMapper(list).ToList();
+            string reportPath = Server.MapPath("~/Reports/rdlcFiles/PackageHistoryReport.rdlc");
+            //List<string> dataSets = new List<string> { "CustomerList" };
+            LocalReport lr = new LocalReport();
+
+            lr.ReportPath = reportPath;
+            lr.EnableHyperlinks = true;
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderedBytes;
+            string mimeType, encoding, fileNameExtension;
+
+            ReportDataSource res = new ReportDataSource("PackageHistoryList", recordsList);
+            lr.DataSources.Add(res);
+
+
+            renderedBytes = lr.Render(
+            format,
+            string.Empty,
+            out mimeType,
+            out encoding,
+            out fileNameExtension,
+            out streams,
+            out warnings
+            );
+
+            return File(renderedBytes, mimeType);
         }
+
     }
 }

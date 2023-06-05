@@ -24,5 +24,7 @@ namespace PackageDelivery.GUI.Models.Parameters
         public string Longitude { get; set; }
         [DisplayName("Ciudad")]
         public long Id_City { get; set; }
+        public string CityName { get; set; }
+        public IEnumerable<CityModel> CityList { get; set; }
     }
 }

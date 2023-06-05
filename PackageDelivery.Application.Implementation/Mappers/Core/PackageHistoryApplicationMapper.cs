@@ -16,7 +16,9 @@ namespace PackageDelivery.Application.Implementation.Mappers.Core
                 DepurateDate = input.DepurateDate,
                 Description = input.Description,
                 Id_Package = input.Id_Package,
-                Id_Warehouse = input.Id_Warehouse
+                Id_Warehouse = input.Id_Warehouse,
+                PackageName = input.PackageName,
+                WarehouseName = input.WarehouseName
             };
         }
 

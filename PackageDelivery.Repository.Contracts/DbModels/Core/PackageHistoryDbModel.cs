@@ -10,5 +10,7 @@ namespace PackageDelivery.Repository.Contracts.DbModels.Core
         public string Description { get; set; }
         public long Id_Package { get; set; }
         public long Id_Warehouse { get; set; }
+        public string PackageName { get; set; }
+        public string WarehouseName { get; set; }
     }
 }

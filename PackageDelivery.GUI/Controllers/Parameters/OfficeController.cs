@@ -1,45 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using PackageDelivery.GUI.Models;
+﻿using PackageDelivery.Application.Contracts.DTO.Parameters;
+using PackageDelivery.Application.Contracts.Interfaces.Parameters;
+using PackageDelivery.Application.Implementation.Implementation.Parameters;
+using PackageDelivery.GUI.Helpers;
 using PackageDelivery.GUI.Models.Parameters;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
+using System;
+using PackageDelivery.GUI.Mappers.Parameters;
 
 namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class OfficeController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IOfficeApplication _app = new OfficeImpApplication();
+        private ICityApplication _dtapp = new CityImpApplication();
 
         // GET: Office
-        public ActionResult Index()
+        public ActionResult Index(string filter = "")
         {
-            return View(db.OfficeModels.ToList());
+            OfficeGUIMapper mapper = new OfficeGUIMapper();
+            IEnumerable<OfficeModel> list = mapper.DTOToModelMapper(_app.getRecordList(filter));
+            return View(list);
         }
 
         // GET: Office/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OfficeModel officeModel = db.OfficeModels.Find(id);
-            if (officeModel == null)
+            OfficeGUIMapper mapper = new OfficeGUIMapper();
+            OfficeModel OfficeModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (OfficeModel == null)
             {
                 return HttpNotFound();
             }
-            return View(officeModel);
+            return View(OfficeModel);
         }
 
         // GET: Office/Create
         public ActionResult Create()
         {
-            return View();
+            IEnumerable<CityDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            CityGUIMapper dtMapper = new CityGUIMapper();
+            OfficeModel model = new OfficeModel()
+            {
+                CityList = dtMapper.DTOToModelMapper(dtList)
+            };
+            return View(model);
         }
 
         // POST: Office/Create
@@ -47,31 +57,45 @@ namespace PackageDelivery.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Direction,Code,CellPhone,Latitude,Longitude,Id_City")] OfficeModel officeModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Direction,Code,CellPhone," +
+            "Latitude,Longitude,Id_City")] OfficeModel OfficeModel)
         {
             if (ModelState.IsValid)
             {
-                db.OfficeModels.Add(officeModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                OfficeGUIMapper mapper = new OfficeGUIMapper();
+                OfficeDTO response = _app.createRecord(mapper.ModelToDTOMapper(OfficeModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.ClassName = ActionMessages.warningClass;
+                ViewBag.Message = ActionMessages.alreadyExistsMessage;
+                return View(OfficeModel);
             }
-
-            return View(officeModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(OfficeModel);
         }
 
         // GET: Office/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OfficeModel officeModel = db.OfficeModels.Find(id);
-            if (officeModel == null)
+            OfficeGUIMapper mapper = new OfficeGUIMapper();
+            OfficeModel OfficeModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            IEnumerable<CityDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            CityGUIMapper dtMapper = new CityGUIMapper();
+            OfficeModel.CityList = dtMapper.DTOToModelMapper(dtList);
+            if (OfficeModel == null)
             {
                 return HttpNotFound();
             }
-            return View(officeModel);
+            return View(OfficeModel);
         }
 
         // POST: Office/Edit/5
@@ -79,50 +103,56 @@ namespace PackageDelivery.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Direction,Code,CellPhone,Latitude,Longitude,Id_City")] OfficeModel officeModel)
+        public ActionResult Edit([Bind(Include = "Id,Name,Direction,Code,CellPhone," +
+            "Latitude,Longitude,Id_City")] OfficeModel OfficeModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(officeModel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                OfficeGUIMapper mapper = new OfficeGUIMapper();
+                OfficeDTO response = _app.updateRecord(mapper.ModelToDTOMapper(OfficeModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
             }
-            return View(officeModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(OfficeModel);
         }
 
         // GET: Office/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OfficeModel officeModel = db.OfficeModels.Find(id);
-            if (officeModel == null)
+            OfficeGUIMapper mapper = new OfficeGUIMapper();
+            OfficeModel OfficeModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (OfficeModel == null)
             {
                 return HttpNotFound();
             }
-            return View(officeModel);
+            return View(OfficeModel);
         }
 
         // POST: Office/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            OfficeModel officeModel = db.OfficeModels.Find(id);
-            db.OfficeModels.Remove(officeModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            bool response = _app.deleteRecordById(id);
+            if (response)
             {
-                db.Dispose();
+                ViewBag.ClassName = ActionMessages.successClass;
+                ViewBag.Message = ActionMessages.succesMessage;
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View();
         }
     }
 }

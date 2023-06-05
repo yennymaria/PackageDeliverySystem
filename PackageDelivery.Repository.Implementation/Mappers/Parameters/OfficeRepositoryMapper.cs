@@ -17,7 +17,8 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 CellPhone = input.Telefono,
                 Latitude = input.Latitud,
                 Longitude = input.Longitud,
-                Id_City = input.Id_Municipio
+                Id_City = input.Id_Municipio,
+                CityName = input.Municipio.Nombre
             };
         }
 

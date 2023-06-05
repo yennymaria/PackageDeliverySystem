@@ -11,6 +11,7 @@
         public string Observations { get; set; }
         public long Id_Person { get; set; }
         public long Id_City { get; set; }
-
+        public string PersonName { get; set; }
+        public string CityName { get; set; }
     }
 }

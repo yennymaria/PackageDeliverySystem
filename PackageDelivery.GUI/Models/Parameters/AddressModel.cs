@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,5 +30,10 @@ namespace PackageDelivery.GUI.Models.Parameters
         public long Id_Person { get; set; }
         [DisplayName("Ciudad")]
         public long Id_City { get; set; }
+        public string PersonName { get; set; }
+        public string CityName { get; set; }
+        public IEnumerable<CityModel> CityList { get; set; }
+        public IEnumerable<PersonModel> PersonList { get; set; }
+
     }
 }

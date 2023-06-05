@@ -3,7 +3,7 @@ using PackageDelivery.GUI.Implementation.Mappers;
 using PackageDelivery.GUI.Models.Core;
 using System.Collections.Generic;
 
-namespace PackageDelivery.GUI.Mappers.Parameters
+namespace PackageDelivery.GUI.Mappers.Core
 {
     public class DeliveryGUIMapper : ModelMapperBase<DeliveryModel, DeliveryDTO>
     {
@@ -18,7 +18,12 @@ namespace PackageDelivery.GUI.Mappers.Parameters
                 Id_Package = input.Id_Package,
                 Id_DeliveryStatus = input.Id_DeliveryStatus,
                 Id_Sender = input.Id_Sender,
-                Id_TransportType = input.Id_TransportType
+                Id_TransportType = input.Id_TransportType,
+                DestinationAddressName = input.DestinationAddressName,
+                PackageName = input.PackageName,
+                DeliveryStatusName = input.DeliveryStatusName,
+                SenderName = input.SenderName,
+                TransportTypeName = input.TransportTypeName
             };
         }
 

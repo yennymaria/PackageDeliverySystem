@@ -16,7 +16,8 @@ namespace PackageDelivery.Application.Implementation.Mappers.Parameters
                 Depth = input.Depth,
                 Width = input.Width,
                 Height = input.Height,
-                Id_Office = input.Id_Office
+                Id_Office = input.Id_Office,
+                OfficeName = input.OfficeName
             };
         }
 

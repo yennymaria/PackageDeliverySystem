@@ -19,7 +19,9 @@ namespace PackageDelivery.GUI.Mappers.Parameters
                 Neighborhood = input.Neighborhood,
                 Observations = input.Observations,
                 Id_Person = input.Id_Person,
-                Id_City = input.Id_City
+                Id_City = input.Id_City,
+                PersonName = input.PersonName,
+                CityName = input.CityName
             };
         }
 

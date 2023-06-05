@@ -18,7 +18,8 @@ namespace PackageDelivery.GUI.Mappers.Parameters
                 CellPhone = input.CellPhone,
                 Latitude = input.Latitude,
                 Longitude = input.Longitude,
-                Id_City = input.Id_City
+                Id_City = input.Id_City,
+                CityName = input.CityName
             };
         }
 
@@ -43,7 +44,9 @@ namespace PackageDelivery.GUI.Mappers.Parameters
                 CellPhone = input.CellPhone,
                 Latitude = input.Latitude,
                 Longitude = input.Longitude,
-                Id_City = input.Id_City
+                Id_City = input.Id_City,
+                CityName = input.CityName
+
             };
         }
 

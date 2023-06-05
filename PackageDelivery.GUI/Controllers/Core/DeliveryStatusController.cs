@@ -1,39 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using PackageDelivery.GUI.Models;
+﻿using PackageDelivery.Application.Contracts.DTO.Core;
+using PackageDelivery.Application.Contracts.Interfaces.Core;
+using PackageDelivery.Application.Implementation.Implementation.Core;
+using PackageDelivery.GUI.Helpers;
+using PackageDelivery.GUI.Mappers.Core;
 using PackageDelivery.GUI.Models.Core;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
 
 namespace PackageDelivery.GUI.Controllers.Core
 {
     public class DeliveryStatusController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IDeliveryStatusApplication _app = new DeliveryStatusImpApplication();
 
         // GET: DeliveryStatus
-        public ActionResult Index()
+        public ActionResult Index(string filter = "")
         {
-            return View(db.DeliveryStatusModels.ToList());
+            DeliveryStatusGUIMapper mapper = new DeliveryStatusGUIMapper();
+            IEnumerable<DeliveryStatusModel> list = mapper.DTOToModelMapper(_app.getRecordList(filter));
+            return View(list);
         }
 
         // GET: DeliveryStatus/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeliveryStatusModel deliveryStatusModel = db.DeliveryStatusModels.Find(id);
-            if (deliveryStatusModel == null)
+            DeliveryStatusGUIMapper mapper = new DeliveryStatusGUIMapper();
+            DeliveryStatusModel DeliveryStatusModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (DeliveryStatusModel == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryStatusModel);
+            return View(DeliveryStatusModel);
         }
 
         // GET: DeliveryStatus/Create
@@ -47,31 +49,41 @@ namespace PackageDelivery.GUI.Controllers.Core
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] DeliveryStatusModel deliveryStatusModel)
+        public ActionResult Create([Bind(Include = "Id,Name")] DeliveryStatusModel DeliveryStatusModel)
         {
             if (ModelState.IsValid)
             {
-                db.DeliveryStatusModels.Add(deliveryStatusModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                DeliveryStatusGUIMapper mapper = new DeliveryStatusGUIMapper();
+                DeliveryStatusDTO response = _app.createRecord(mapper.ModelToDTOMapper(DeliveryStatusModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.ClassName = ActionMessages.warningClass;
+                ViewBag.Message = ActionMessages.alreadyExistsMessage;
+                return View(DeliveryStatusModel);
             }
-
-            return View(deliveryStatusModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(DeliveryStatusModel);
         }
 
         // GET: DeliveryStatus/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeliveryStatusModel deliveryStatusModel = db.DeliveryStatusModels.Find(id);
-            if (deliveryStatusModel == null)
+            DeliveryStatusGUIMapper mapper = new DeliveryStatusGUIMapper();
+            DeliveryStatusModel DeliveryStatusModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (DeliveryStatusModel == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryStatusModel);
+            return View(DeliveryStatusModel);
         }
 
         // POST: DeliveryStatus/Edit/5
@@ -79,50 +91,55 @@ namespace PackageDelivery.GUI.Controllers.Core
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] DeliveryStatusModel deliveryStatusModel)
+        public ActionResult Edit([Bind(Include = "Id,Name")] DeliveryStatusModel DeliveryStatusModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(deliveryStatusModel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                DeliveryStatusGUIMapper mapper = new DeliveryStatusGUIMapper();
+                DeliveryStatusDTO response = _app.updateRecord(mapper.ModelToDTOMapper(DeliveryStatusModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
             }
-            return View(deliveryStatusModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(DeliveryStatusModel);
         }
 
         // GET: DeliveryStatus/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeliveryStatusModel deliveryStatusModel = db.DeliveryStatusModels.Find(id);
-            if (deliveryStatusModel == null)
+            DeliveryStatusGUIMapper mapper = new DeliveryStatusGUIMapper();
+            DeliveryStatusModel DeliveryStatusModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (DeliveryStatusModel == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryStatusModel);
+            return View(DeliveryStatusModel);
         }
 
         // POST: DeliveryStatus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            DeliveryStatusModel deliveryStatusModel = db.DeliveryStatusModels.Find(id);
-            db.DeliveryStatusModels.Remove(deliveryStatusModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            bool response = _app.deleteRecordById(id);
+            if (response)
             {
-                db.Dispose();
+                ViewBag.ClassName = ActionMessages.successClass;
+                ViewBag.Message = ActionMessages.succesMessage;
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View();
         }
     }
 }

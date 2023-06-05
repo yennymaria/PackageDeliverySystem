@@ -3,7 +3,7 @@ using PackageDelivery.GUI.Implementation.Mappers;
 using PackageDelivery.GUI.Models.Core;
 using System.Collections.Generic;
 
-namespace PackagePackageHistory.GUI.Mappers.Parameters
+namespace PackagePackageHistory.GUI.Mappers.Core
 {
     public class PackageHistoryGUIMapper : ModelMapperBase<PackageHistoryModel, PackageHistoryDTO>
     {
@@ -16,7 +16,9 @@ namespace PackagePackageHistory.GUI.Mappers.Parameters
                 DepurateDate = input.DepurateDate,
                 Description = input.Description,
                 Id_Package = input.Id_Package,
-                Id_Warehouse = input.Id_Warehouse
+                Id_Warehouse = input.Id_Warehouse,
+                PackageName = input.PackageName,
+                WarehouseName = input.WarehouseName
             };
         }
 

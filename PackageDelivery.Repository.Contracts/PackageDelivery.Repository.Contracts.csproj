@@ -54,12 +54,19 @@
     <Compile Include="DbModels\Parameters\TransportTypeDbModel.cs" />
     <Compile Include="DbModels\Parameters\VehicleDbModel.cs" />
     <Compile Include="DbModels\Parameters\WarehouseDbModel.cs" />
+    <Compile Include="Interfaces\Core\IDeliveryRepository.cs" />
+    <Compile Include="Interfaces\Core\IDeliveryStatusRepository.cs" />
+    <Compile Include="Interfaces\Core\IPackageHistoryRepository.cs" />
+    <Compile Include="Interfaces\Parameters\IAddressRepository.cs" />
     <Compile Include="Interfaces\Parameters\ICityRepository.cs" />
     <Compile Include="Interfaces\Parameters\IDepartmentRepository.cs" />
+    <Compile Include="Interfaces\Parameters\IOfficeRepository.cs" />
+    <Compile Include="Interfaces\Parameters\IPackageRepository.cs" />
     <Compile Include="Interfaces\Parameters\IVehicleRepository.cs" />
     <Compile Include="Interfaces\Parameters\ITransportTypeRepository.cs" />
     <Compile Include="Interfaces\Parameters\IDocumentTypeRepository.cs" />
     <Compile Include="Interfaces\Parameters\IPersonRepository.cs" />
+    <Compile Include="Interfaces\Parameters\IWarehouseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

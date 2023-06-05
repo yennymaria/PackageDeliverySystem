@@ -17,7 +17,12 @@ namespace PackageDelivery.Application.Implementation.Mappers.Core
                 Id_Package = input.Id_Package,
                 Id_DeliveryStatus = input.Id_DeliveryStatus,
                 Id_Sender = input.Id_Sender,
-                Id_TransportType = input.Id_TransportType
+                Id_TransportType = input.Id_TransportType,
+                DestinationAddressName = input.DestinationAddressName,
+                PackageName = input.PackageName,
+                DeliveryStatusName = input.DeliveryStatusName,
+                SenderName = input.SenderName,
+                TransportTypeName = input.TransportTypeName
             };
         }
 

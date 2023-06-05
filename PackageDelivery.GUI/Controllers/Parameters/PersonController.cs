@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 using System;
+using Microsoft.Reporting.WebForms;
+using PackageDelivery.GUI.Models.Core;
+using PackagePackageHistory.GUI.Mappers.Core;
+using System.Linq;
 
 namespace PackageDelivery.GUI.Controllers.Parameters
 {
@@ -153,6 +157,39 @@ namespace PackageDelivery.GUI.Controllers.Parameters
             ViewBag.ClassName = ActionMessages.warningClass;
             ViewBag.Message = ActionMessages.errorMessage;
             return View();
+        }
+        public ActionResult Person_Report(string format = "PDF")
+        {
+            var list = _app.getRecordList(string.Empty);
+            PersonGUIMapper mapper = new PersonGUIMapper();
+            List<PersonModel> recordsList = mapper.DTOToModelMapper(list).ToList();
+            string reportPath = Server.MapPath("~/Reports/rdlcFiles/PeopleReport.rdlc");
+            //List<string> dataSets = new List<string> { "CustomerList" };
+            LocalReport lr = new LocalReport();
+
+            lr.ReportPath = reportPath;
+            lr.EnableHyperlinks = true;
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderedBytes;
+            string mimeType, encoding, fileNameExtension;
+
+            ReportDataSource res = new ReportDataSource("PeopleList", recordsList);
+            lr.DataSources.Add(res);
+
+
+            renderedBytes = lr.Render(
+            format,
+            string.Empty,
+            out mimeType,
+            out encoding,
+            out fileNameExtension,
+            out streams,
+            out warnings
+            );
+
+            return File(renderedBytes, mimeType);
         }
     }
 }

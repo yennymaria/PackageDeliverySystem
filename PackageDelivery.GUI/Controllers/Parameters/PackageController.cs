@@ -1,45 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using PackageDelivery.GUI.Models;
+﻿using PackageDelivery.Application.Contracts.DTO.Parameters;
+using PackageDelivery.Application.Contracts.Interfaces.Parameters;
+using PackageDelivery.Application.Implementation.Implementation.Parameters;
+using PackageDelivery.GUI.Helpers;
+using PackageDelivery.GUI.Implementation.Mappers.Parameters;
 using PackageDelivery.GUI.Models.Parameters;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
+using System;
+using PackageDelivery.GUI.Mappers.Parameters;
 
 namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class PackageController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IPackageApplication _app = new PackageImpApplication();
+        private IOfficeApplication _dtapp = new OfficeImpApplication();
 
         // GET: Package
-        public ActionResult Index()
+        public ActionResult Index(string filter = "")
         {
-            return View(db.PackageModels.ToList());
+            PackageGUIMapper mapper = new PackageGUIMapper();
+            IEnumerable<PackageModel> list = mapper.DTOToModelMapper(_app.getRecordList(filter));
+            return View(list);
         }
 
         // GET: Package/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PackageModel packageModel = db.PackageModels.Find(id);
-            if (packageModel == null)
+            PackageGUIMapper mapper = new PackageGUIMapper();
+            PackageModel PackageModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (PackageModel == null)
             {
                 return HttpNotFound();
             }
-            return View(packageModel);
+            return View(PackageModel);
         }
 
         // GET: Package/Create
         public ActionResult Create()
         {
-            return View();
+            IEnumerable<OfficeDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            OfficeGUIMapper dtMapper = new OfficeGUIMapper();
+            PackageModel model = new PackageModel()
+            {
+                OfficeList = dtMapper.DTOToModelMapper(dtList)
+            };
+            return View(model);
         }
 
         // POST: Package/Create
@@ -47,31 +58,45 @@ namespace PackageDelivery.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Weight,Depth,Width,Height,Id_Office")] PackageModel packageModel)
+        public ActionResult Create([Bind(Include = "Id,Weight,Depth,Width,Height," +
+            "Id_Office")] PackageModel PackageModel)
         {
             if (ModelState.IsValid)
             {
-                db.PackageModels.Add(packageModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                PackageGUIMapper mapper = new PackageGUIMapper();
+                PackageDTO response = _app.createRecord(mapper.ModelToDTOMapper(PackageModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.ClassName = ActionMessages.warningClass;
+                ViewBag.Message = ActionMessages.alreadyExistsMessage;
+                return View(PackageModel);
             }
-
-            return View(packageModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(PackageModel);
         }
 
         // GET: Package/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PackageModel packageModel = db.PackageModels.Find(id);
-            if (packageModel == null)
+            PackageGUIMapper mapper = new PackageGUIMapper();
+            PackageModel PackageModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            IEnumerable<OfficeDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            OfficeGUIMapper dtMapper = new OfficeGUIMapper();
+            PackageModel.OfficeList = dtMapper.DTOToModelMapper(dtList);
+            if (PackageModel == null)
             {
                 return HttpNotFound();
             }
-            return View(packageModel);
+            return View(PackageModel);
         }
 
         // POST: Package/Edit/5
@@ -79,50 +104,56 @@ namespace PackageDelivery.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Weight,Depth,Width,Height,Id_Office")] PackageModel packageModel)
+        public ActionResult Edit([Bind(Include = "Id,Weight,Depth,Width,Height," +
+            "Id_Office")] PackageModel PackageModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(packageModel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                PackageGUIMapper mapper = new PackageGUIMapper();
+                PackageDTO response = _app.updateRecord(mapper.ModelToDTOMapper(PackageModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
             }
-            return View(packageModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(PackageModel);
         }
 
         // GET: Package/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PackageModel packageModel = db.PackageModels.Find(id);
-            if (packageModel == null)
+            PackageGUIMapper mapper = new PackageGUIMapper();
+            PackageModel PackageModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (PackageModel == null)
             {
                 return HttpNotFound();
             }
-            return View(packageModel);
+            return View(PackageModel);
         }
 
         // POST: Package/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            PackageModel packageModel = db.PackageModels.Find(id);
-            db.PackageModels.Remove(packageModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            bool response = _app.deleteRecordById(id);
+            if (response)
             {
-                db.Dispose();
+                ViewBag.ClassName = ActionMessages.successClass;
+                ViewBag.Message = ActionMessages.succesMessage;
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View();
         }
     }
 }

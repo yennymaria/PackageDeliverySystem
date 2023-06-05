@@ -41,12 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\Core\DeliveryImpApplication.cs" />
+    <Compile Include="Implementation\Core\DeliveryStatusImpApplication.cs" />
+    <Compile Include="Implementation\Core\PackageHistoryImpApplication.cs" />
+    <Compile Include="Implementation\Parameters\AddressImpApplication.cs" />
     <Compile Include="Implementation\Parameters\CityImpApplication.cs" />
     <Compile Include="Implementation\Parameters\DepartmentImpApplication.cs" />
+    <Compile Include="Implementation\Parameters\OfficeImpApplication.cs" />
+    <Compile Include="Implementation\Parameters\PackageImpApplication.cs" />
     <Compile Include="Implementation\Parameters\VehicleImpApplication.cs" />
     <Compile Include="Implementation\Parameters\TransportTypeImpApplication.cs" />
     <Compile Include="Implementation\Parameters\DocumentTypeImpApplication.cs" />
     <Compile Include="Implementation\Parameters\PersonImpApplication.cs" />
+    <Compile Include="Implementation\Parameters\WarehouseImpApplication.cs" />
     <Compile Include="Mappers\Core\DeliveryApplicationMapper.cs" />
     <Compile Include="Mappers\Core\DeliveryStatusApplicationMapper.cs" />
     <Compile Include="Mappers\Core\PackageHistoryApplicationMapper.cs" />

@@ -16,7 +16,8 @@ namespace PackageDelivery.Application.Implementation.Mappers.Parameters
                 Code = input.Code,
                 Latitude = input.Latitude,
                 Longitude = input.Longitude,
-                Id_City = input.Id_City
+                Id_City = input.Id_City,
+                CityName = input.CityName
             };
         }
 

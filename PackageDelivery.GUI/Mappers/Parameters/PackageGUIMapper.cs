@@ -12,11 +12,12 @@ namespace PackageDelivery.GUI.Mappers.Parameters
             return new PackageModel()
             {
                 Id = input.Id,
-                Weight = input.Weight.ToString(),
-                Depth = input.Depth.ToString(),
-                Width = input.Width.ToString(),
-                Height = input.Height.ToString(),
-                Id_Office = input.Id_Office
+                Weight = input.Weight,
+                Depth = input.Depth,
+                Width = input.Width,
+                Height = input.Height,
+                Id_Office = input.Id_Office,
+                OfficeName = input.OfficeName
             };
         }
 
@@ -35,11 +36,12 @@ namespace PackageDelivery.GUI.Mappers.Parameters
             return new PackageDTO()
             {
                 Id = input.Id,
-                Weight = input.Weight.ToString(),
-                Depth = input.Depth.ToString(),
-                Width = input.Width.ToString(),
-                Height = input.Height.ToString(),
-                Id_Office = input.Id_Office
+                Weight = input.Weight,
+                Depth = input.Depth,
+                Width = input.Width,
+                Height = input.Height,
+                Id_Office = input.Id_Office,
+                OfficeName = input.OfficeName
             };
         }
 

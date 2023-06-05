@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PackageDelivery.GUI.Models.Parameters;
+using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PackageDelivery.GUI.Models.Core
@@ -20,5 +22,10 @@ namespace PackageDelivery.GUI.Models.Core
         public long Id_Package { get; set; }
         [DisplayName("Bodega")]
         public long Id_Warehouse { get; set; }
+        public string PackageName { get; set; }
+        public string WarehouseName { get; set; }
+        public IEnumerable<PackageModel> PackageList { get; set; }
+
+        public IEnumerable<WarehouseModel> WarehouseList { get; set; }
     }
 }

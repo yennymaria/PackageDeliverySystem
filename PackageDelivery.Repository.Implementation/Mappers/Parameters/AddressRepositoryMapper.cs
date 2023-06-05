@@ -18,7 +18,9 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 Neighborhood = input.Barrio,
                 Observations = input.Observaciones,
                 Id_Person = input.Id_Persona,
-                Id_City = input.Id_Municipio
+                Id_City = input.Id_Municipio,
+                CityName = input.Municipio.Nombre,
+                PersonName = input.Persona.Documento
             };
         }
 

@@ -1,45 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using PackageDelivery.GUI.Models;
+﻿using PackageDelivery.Application.Contracts.DTO.Parameters;
+using PackageDelivery.Application.Contracts.Interfaces.Parameters;
+using PackageDelivery.Application.Implementation.Implementation.Parameters;
+using PackageDelivery.GUI.Helpers;
 using PackageDelivery.GUI.Models.Parameters;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
+using System;
+using PackageDelivery.GUI.Mappers.Parameters;
+using PackageDelivery.GUI.Implementation.Mappers.Parameters;
 
 namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class AddressController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IAddressApplication _app = new AddressImpApplication();
+        private ICityApplication _dtapp = new CityImpApplication();
+        private IPersonApplication _dt2app = new PersonImpApplication();
 
         // GET: Address
-        public ActionResult Index()
+        public ActionResult Index(string filter = "")
         {
-            return View(db.AddressModels.ToList());
+            AddressGUIMapper mapper = new AddressGUIMapper();
+            IEnumerable<AddressModel> list = mapper.DTOToModelMapper(_app.getRecordList(filter));
+            return View(list);
         }
 
         // GET: Address/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AddressModel addressModel = db.AddressModels.Find(id);
-            if (addressModel == null)
+            AddressGUIMapper mapper = new AddressGUIMapper();
+            AddressModel AddressModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (AddressModel == null)
             {
                 return HttpNotFound();
             }
-            return View(addressModel);
+            return View(AddressModel);
         }
 
         // GET: Address/Create
         public ActionResult Create()
         {
-            return View();
+            IEnumerable<CityDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            IEnumerable<PersonDTO> dt2List = this._dt2app.getRecordList(string.Empty);
+            CityGUIMapper dtMapper = new CityGUIMapper();
+            PersonGUIMapper dt2Mapper = new PersonGUIMapper();
+            AddressModel model = new AddressModel()
+            {
+                CityList = dtMapper.DTOToModelMapper(dtList),
+                PersonList = dt2Mapper.DTOToModelMapper(dt2List)
+            };
+            return View(model);
         }
 
         // POST: Address/Create
@@ -47,31 +62,48 @@ namespace PackageDelivery.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Current,StreetType,Number,PropertyType,Neighborhood,Observations,Id_Person,Id_City")] AddressModel addressModel)
+        public ActionResult Create([Bind(Include = "Id,Current,StreetType,Number,PropertyType,Neighborhood," +
+            "Observations,Id_Person,Id_City")] AddressModel AddressModel)
         {
             if (ModelState.IsValid)
             {
-                db.AddressModels.Add(addressModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                AddressGUIMapper mapper = new AddressGUIMapper();
+                AddressDTO response = _app.createRecord(mapper.ModelToDTOMapper(AddressModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.ClassName = ActionMessages.warningClass;
+                ViewBag.Message = ActionMessages.alreadyExistsMessage;
+                return View(AddressModel);
             }
-
-            return View(addressModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(AddressModel);
         }
 
         // GET: Address/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AddressModel addressModel = db.AddressModels.Find(id);
-            if (addressModel == null)
+            AddressGUIMapper mapper = new AddressGUIMapper();
+            AddressModel AddressModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            IEnumerable<CityDTO> dtList = this._dtapp.getRecordList(string.Empty);
+            IEnumerable<PersonDTO> dt2List = this._dt2app.getRecordList(string.Empty);
+            CityGUIMapper dtMapper = new CityGUIMapper();
+            PersonGUIMapper dt2Mapper = new PersonGUIMapper();
+            AddressModel.CityList = dtMapper.DTOToModelMapper(dtList);
+            AddressModel.PersonList = dt2Mapper.DTOToModelMapper(dt2List);
+            if (AddressModel == null)
             {
                 return HttpNotFound();
             }
-            return View(addressModel);
+            return View(AddressModel);
         }
 
         // POST: Address/Edit/5
@@ -79,50 +111,56 @@ namespace PackageDelivery.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Current,StreetType,Number,PropertyType,Neighborhood,Observations,Id_Person,Id_City")] AddressModel addressModel)
+        public ActionResult Edit([Bind(Include = "Id,Current,StreetType,Number,PropertyType,Neighborhood,Observations," +
+            "Id_Person,Id_City")] AddressModel AddressModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(addressModel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                AddressGUIMapper mapper = new AddressGUIMapper();
+                AddressDTO response = _app.updateRecord(mapper.ModelToDTOMapper(AddressModel));
+                if (response != null)
+                {
+                    ViewBag.ClassName = ActionMessages.successClass;
+                    ViewBag.Message = ActionMessages.succesMessage;
+                    return RedirectToAction("Index");
+                }
             }
-            return View(addressModel);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View(AddressModel);
         }
 
         // GET: Address/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AddressModel addressModel = db.AddressModels.Find(id);
-            if (addressModel == null)
+            AddressGUIMapper mapper = new AddressGUIMapper();
+            AddressModel AddressModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
+            if (AddressModel == null)
             {
                 return HttpNotFound();
             }
-            return View(addressModel);
+            return View(AddressModel);
         }
 
         // POST: Address/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            AddressModel addressModel = db.AddressModels.Find(id);
-            db.AddressModels.Remove(addressModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            bool response = _app.deleteRecordById(id);
+            if (response)
             {
-                db.Dispose();
+                ViewBag.ClassName = ActionMessages.successClass;
+                ViewBag.Message = ActionMessages.succesMessage;
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            ViewBag.ClassName = ActionMessages.warningClass;
+            ViewBag.Message = ActionMessages.errorMessage;
+            return View();
         }
     }
 }

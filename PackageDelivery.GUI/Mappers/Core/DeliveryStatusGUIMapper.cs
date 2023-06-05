@@ -3,7 +3,7 @@ using PackageDelivery.GUI.Implementation.Mappers;
 using PackageDelivery.GUI.Models.Core;
 using System.Collections.Generic;
 
-namespace PackageDelivery.GUI.Mappers.Parameters
+namespace PackageDelivery.GUI.Mappers.Core
 {
     public class DeliveryStatusGUIMapper : ModelMapperBase<DeliveryStatusModel, DeliveryStatusDTO>
     {

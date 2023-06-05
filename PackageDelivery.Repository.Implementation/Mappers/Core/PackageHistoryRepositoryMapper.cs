@@ -15,7 +15,9 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Core
                 DepurateDate = input.FechaSalida,
                 Description = input.Descripcion,
                 Id_Package = input.Id_Paquete,
-                Id_Warehouse = input.Id_Bodega
+                Id_Warehouse = input.Id_Bodega,
+                PackageName = input.Paquete.Id+"",
+                WarehouseName = input.Bodega.Nombre
             };
         }
 

@@ -17,7 +17,12 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Core
                 Id_Package = input.Id_Paquete,
                 Id_DeliveryStatus = input.Id_EstadoEnvio,
                 Id_Sender = input.Id_Remitente,
-                Id_TransportType = input.Id_TipoTransporte
+                Id_TransportType = input.Id_TipoTransporte,
+                DestinationAddressName = input.Direccion.TipoCalle+" "+input.Direccion.Numero+" "+input.Direccion.Barrio,
+                PackageName = input.Paquete.Id+"",
+                DeliveryStatusName = input.EstadoEnvio.Nombre,
+                SenderName = input.Persona.Documento,
+                TransportTypeName = input.TipoTransporte.nombre
             };
         }
 

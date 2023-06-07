@@ -3,15 +3,17 @@ using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Mappers.Parameters;
 using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
-using PackageDelivery.Repository.Implementation.Parameters;
 using System.Collections.Generic;
-using System;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
     public class VehicleImpApplication : IVehicleApplication
     {
-        IVehicleRepository _repository = new VehicleImpRepository();
+        IVehicleRepository _repository;
+        public VehicleImpApplication(IVehicleRepository repository)
+        {
+            this._repository = repository;
+        }
         public VehicleDTO createRecord(VehicleDTO record)
         {
             VehicleApplicationMapper mapper = new VehicleApplicationMapper();

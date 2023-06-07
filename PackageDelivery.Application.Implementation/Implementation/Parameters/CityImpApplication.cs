@@ -3,15 +3,18 @@ using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Mappers.Parameters;
 using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
-using PackageDelivery.Repository.Implementation.Parameters;
-using System;
 using System.Collections.Generic;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
     public class CityImpApplication : ICityApplication
     {
-        ICityRepository _repository = new CityImpRepository();
+        private ICityRepository _repository;
+        public CityImpApplication(ICityRepository repository) 
+        {
+            this._repository = repository;
+        }
+        
         public CityDTO createRecord(CityDTO record)
         {
             CityApplicationMapper mapper = new CityApplicationMapper();

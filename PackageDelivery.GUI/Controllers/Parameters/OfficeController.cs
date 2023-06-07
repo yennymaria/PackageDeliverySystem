@@ -13,8 +13,14 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class OfficeController : Controller
     {
-        private IOfficeApplication _app = new OfficeImpApplication();
-        private ICityApplication _dtapp = new CityImpApplication();
+        private IOfficeApplication _app;
+        private ICityApplication _dtapp;
+
+        public OfficeController(IOfficeApplication app, ICityApplication dtapp)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+        }
 
         // GET: Office
         public ActionResult Index(string filter = "")

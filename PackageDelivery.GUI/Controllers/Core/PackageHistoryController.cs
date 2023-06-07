@@ -22,9 +22,17 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class PackageHistoryController : Controller
     {
-        private IPackageHistoryApplication _app = new PackageHistoryImpApplication();
-        private IPackageApplication _dtapp = new PackageImpApplication();
-        private IWarehouseApplication _dt2app = new WarehouseImpApplication();
+        private IPackageHistoryApplication _app;
+        private IPackageApplication _dtapp;
+        private IWarehouseApplication _dt2app;
+
+        public PackageHistoryController(IPackageHistoryApplication app, IPackageApplication dtapp,
+            IWarehouseApplication dt2app)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+            this._dt2app = dt2app;
+        }
 
         // GET: PackageHistory
         public ActionResult Index(string filter = "")

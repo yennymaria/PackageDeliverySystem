@@ -19,12 +19,23 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class DeliveryController : Controller
     {
-        private IDeliveryApplication _app = new DeliveryImpApplication();
-        private IAddressApplication _dtapp = new AddressImpApplication();
-        private IPackageApplication _dt2app = new PackageImpApplication();
-        private IDeliveryStatusApplication _dt3app = new DeliveryStatusImpApplication();
-        private IPersonApplication _dt4app = new PersonImpApplication();
-        private ITransportTypeApplication _dt5app = new TransportTypeImpApplication();
+        private IDeliveryApplication _app;
+        private IAddressApplication _dtapp;
+        private IPackageApplication _dt2app;
+        private IDeliveryStatusApplication _dt3app;
+        private IPersonApplication _dt4app;
+        private ITransportTypeApplication _dt5app;
+
+        public DeliveryController(IDeliveryApplication app, IAddressApplication dtapp, IPackageApplication dt2app,
+            IDeliveryStatusApplication dt3app, IPersonApplication dt4app, ITransportTypeApplication dt5app)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+            this._dt2app = dt2app;
+            this._dt3app = dt3app;
+            this._dt4app = dt4app;
+            this._dt5app = dt5app;
+        }
 
         // GET: Delivery
         public ActionResult Index(string filter = "")

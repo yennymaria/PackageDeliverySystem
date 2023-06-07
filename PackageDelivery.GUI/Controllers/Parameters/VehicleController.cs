@@ -14,8 +14,14 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class VehicleController : Controller
     {
-        private IVehicleApplication _app = new VehicleImpApplication();
-        private ITransportTypeApplication _dtApp = new TransportTypeImpApplication();
+        private IVehicleApplication _app;
+        private ITransportTypeApplication _dtapp;
+
+        public VehicleController(IVehicleApplication app, ITransportTypeApplication dtapp)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+        }
 
         // GET: Vehicle
         public ActionResult Index(string filter = "")
@@ -44,7 +50,7 @@ namespace PackageDelivery.GUI.Controllers.Parameters
         // GET: Vehicle/Create
         public ActionResult Create()
         {
-            IEnumerable<TransportTypeDTO> dtList = this._dtApp.getRecordList(string.Empty);
+            IEnumerable<TransportTypeDTO> dtList = this._dtapp.getRecordList(string.Empty);
             TransportTypeGUIMapper dtMapper = new TransportTypeGUIMapper();
             VehicleModel model = new VehicleModel()
             {
@@ -88,7 +94,7 @@ namespace PackageDelivery.GUI.Controllers.Parameters
             }
             VehicleGUIMapper mapper = new VehicleGUIMapper();
             VehicleModel VehicleModel = mapper.DTOToModelMapper(_app.getRecordById(id.Value));
-            IEnumerable<TransportTypeDTO> dtList = this._dtApp.getRecordList(string.Empty);
+            IEnumerable<TransportTypeDTO> dtList = this._dtapp.getRecordList(string.Empty);
             TransportTypeGUIMapper dtMapper = new TransportTypeGUIMapper();
             VehicleModel.TransportTypeList = dtMapper.DTOToModelMapper(dtList);
             if (VehicleModel == null)

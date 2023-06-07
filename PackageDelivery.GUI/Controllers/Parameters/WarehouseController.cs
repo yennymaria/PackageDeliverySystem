@@ -14,8 +14,14 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class WarehouseController : Controller
     {
-        private IWarehouseApplication _app = new WarehouseImpApplication();
-        private ICityApplication _dtapp = new CityImpApplication();
+        private IWarehouseApplication _app;
+        private ICityApplication _dtapp;
+
+        public WarehouseController(IWarehouseApplication app, ICityApplication dtapp)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+        }
 
         // GET: Warehouse
         public ActionResult Index(string filter = "")

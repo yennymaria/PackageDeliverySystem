@@ -19,7 +19,6 @@ namespace PackageDelivery.GUI.Controllers
         public ManageController()
         {
         }
-
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;

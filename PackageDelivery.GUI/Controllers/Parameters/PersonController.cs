@@ -17,8 +17,14 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class PersonController : Controller
     {
-        private IPersonApplication _app = new PersonImpApplication();
-        private IDocumentTypeApplication _dtapp = new DocumentTypeImpApplication();
+        private IPersonApplication _app;
+        private IDocumentTypeApplication _dtapp;
+
+        public PersonController(IPersonApplication app, IDocumentTypeApplication dtapp)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+        }
 
         // GET: Person
         public ActionResult Index(string filter = "")

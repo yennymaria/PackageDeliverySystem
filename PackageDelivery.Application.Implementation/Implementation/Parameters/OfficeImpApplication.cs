@@ -3,15 +3,17 @@ using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Mappers.Parameters;
 using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
-using PackageDelivery.Repository.Implementation.Parameters;
 using System.Collections.Generic;
-using System;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
     public class OfficeImpApplication : IOfficeApplication
     {
-        IOfficeRepository _repository = new OfficeImpRepository();
+        IOfficeRepository _repository;
+        public OfficeImpApplication(IOfficeRepository repository)
+        {
+            this._repository = repository;
+        }
         public OfficeDTO createRecord(OfficeDTO record)
         {
             OfficeApplicationMapper mapper = new OfficeApplicationMapper();

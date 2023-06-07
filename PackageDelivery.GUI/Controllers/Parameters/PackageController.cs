@@ -14,8 +14,14 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class PackageController : Controller
     {
-        private IPackageApplication _app = new PackageImpApplication();
-        private IOfficeApplication _dtapp = new OfficeImpApplication();
+        private IPackageApplication _app;
+        private IOfficeApplication _dtapp;
+
+        public PackageController(IPackageApplication app, IOfficeApplication dtapp)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+        }
 
         // GET: Package
         public ActionResult Index(string filter = "")

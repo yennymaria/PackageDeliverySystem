@@ -1,5 +1,6 @@
 ﻿using PackageDelivery.Application.Contracts.DTO.Core;
 using PackageDelivery.Application.Contracts.Interfaces.Core;
+using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Implementation.Core;
 using PackageDelivery.GUI.Helpers;
 using PackageDelivery.GUI.Mappers.Core;
@@ -12,7 +13,11 @@ namespace PackageDelivery.GUI.Controllers.Core
 {
     public class DeliveryStatusController : Controller
     {
-        private IDeliveryStatusApplication _app = new DeliveryStatusImpApplication();
+        private IDeliveryStatusApplication _app;
+        public DeliveryStatusController(IDeliveryStatusApplication app)
+        {
+            this._app = app;
+        }
 
         // GET: DeliveryStatus
         public ActionResult Index(string filter = "")

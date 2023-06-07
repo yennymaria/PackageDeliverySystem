@@ -2,18 +2,18 @@
 using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Mappers.Core;
 using PackageDelivery.Repository.Contracts.DbModels.Core;
-using PackageDelivery.Repository.Contracts.Interfaces.Core;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
-using PackageDelivery.Repository.Implementation.Core;
-using PackageDelivery.Repository.Implementation.Parameters;
-using System;
 using System.Collections.Generic;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
     public class DeliveryImpApplication : IDeliveryApplication
     {
-        IDeliveryRepository _repository = new DeliveryImpRepository();
+        IDeliveryRepository _repository;
+        public DeliveryImpApplication(IDeliveryRepository repository)
+        {
+            this._repository = repository;
+        }
         public DeliveryDTO createRecord(DeliveryDTO record)
         {
             DeliveryApplicationMapper mapper = new DeliveryApplicationMapper();

@@ -9,14 +9,23 @@ using System.Web.Mvc;
 using System;
 using PackageDelivery.GUI.Mappers.Parameters;
 using PackageDelivery.GUI.Implementation.Mappers.Parameters;
+using PackageDelivery.Application.Contracts.Interfaces.Core;
 
 namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class AddressController : Controller
     {
-        private IAddressApplication _app = new AddressImpApplication();
-        private ICityApplication _dtapp = new CityImpApplication();
-        private IPersonApplication _dt2app = new PersonImpApplication();
+        private IAddressApplication _app;
+        private ICityApplication _dtapp;
+        private IPersonApplication _dt2app;
+
+        public AddressController(IAddressApplication app, ICityApplication dtapp,
+            IPersonApplication dt2app)
+        {
+            this._app = app;
+            this._dtapp = dtapp;
+            this._dt2app = dt2app;
+        }
 
         // GET: Address
         public ActionResult Index(string filter = "")

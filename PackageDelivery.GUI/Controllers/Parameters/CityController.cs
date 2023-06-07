@@ -14,8 +14,14 @@ namespace PackageDelivery.GUI.Controllers.Parameters
 {
     public class CityController : Controller
     {
-        private ICityApplication _app = new CityImpApplication();
-        private IDepartmentApplication _dtapp = new DepartmentImpApplication();
+        private ICityApplication _app;
+        private IDepartmentApplication _dtapp;
+
+        public CityController(ICityApplication app,IDepartmentApplication dtapp)
+        {
+            this._app= app;
+            this._dtapp= dtapp;
+        }
 
         // GET: City
         public ActionResult Index(string filter = "")

@@ -3,15 +3,17 @@ using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Mappers.Parameters;
 using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
-using PackageDelivery.Repository.Implementation.Parameters;
 using System.Collections.Generic;
-using System;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
     public class PersonImpApplication : IPersonApplication
     {
-        IPersonRepository _repository = new PersonImpRepository();
+        IPersonRepository _repository;
+        public PersonImpApplication(IPersonRepository repository)
+        {
+            this._repository = repository;
+        }
         public PersonDTO createRecord(PersonDTO record)
         {
             PersonApplicationMapper mapper = new PersonApplicationMapper();

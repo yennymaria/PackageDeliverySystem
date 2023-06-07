@@ -3,15 +3,17 @@ using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Mappers.Parameters;
 using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
-using PackageDelivery.Repository.Implementation.Parameters;
-using System;
 using System.Collections.Generic;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
     public class TransportTypeImpApplication : ITransportTypeApplication
     {
-        ITransportTypeRepository _repository = new TransportTypeImpRepository();
+        ITransportTypeRepository _repository;
+        public TransportTypeImpApplication(ITransportTypeRepository repository)
+        {
+            this._repository = repository;
+        }
         public TransportTypeDTO createRecord(TransportTypeDTO record)
         {
             TransportTypeApplicationMapper mapper = new TransportTypeApplicationMapper();

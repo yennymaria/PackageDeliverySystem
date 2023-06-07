@@ -4,12 +4,15 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Historial Paquetes</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Agregar Nuevo", "Create")
 </p>
-<table class="table">
+<p>
+    @Html.ActionLink("Reporte", "PackageHistory_Report")
+</p>
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.AdmissionDate)
@@ -47,9 +50,9 @@
             @Html.DisplayFor(modelItem => item.WarehouseName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }, new { @Class = "btn btn-warning" }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.Id }, new { @Class = "btn btn-info" }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.Id }, new { @Class = "btn btn-danger" })
         </td>
     </tr>
 }

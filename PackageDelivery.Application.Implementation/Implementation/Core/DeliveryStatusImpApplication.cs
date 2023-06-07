@@ -3,15 +3,17 @@ using PackageDelivery.Application.Contracts.Interfaces.Core;
 using PackageDelivery.Application.Implementation.Mappers.Core;
 using PackageDelivery.Repository.Contracts.DbModels.Core;
 using PackageDelivery.Repository.Contracts.Interfaces.Core;
-using PackageDelivery.Repository.Implementation.Core;
-using System;
 using System.Collections.Generic;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Core
 {
     public class DeliveryStatusImpApplication : IDeliveryStatusApplication
     {
-        IDeliveryStatusRepository _repository = new DeliveryStatusImpRepository();
+        IDeliveryStatusRepository _repository;
+        public DeliveryStatusImpApplication(IDeliveryStatusRepository repository)
+        {
+            this._repository = repository;
+        }
         public DeliveryStatusDTO createRecord(DeliveryStatusDTO record)
         {
             DeliveryStatusApplicationMapper mapper = new DeliveryStatusApplicationMapper();

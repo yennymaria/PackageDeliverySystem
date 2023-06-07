@@ -3,15 +3,17 @@ using PackageDelivery.Application.Contracts.Interfaces.Parameters;
 using PackageDelivery.Application.Implementation.Mappers.Parameters;
 using PackageDelivery.Repository.Contracts.DbModels.Parameters;
 using PackageDelivery.Repository.Contracts.Interfaces.Parameters;
-using PackageDelivery.Repository.Implementation.Parameters;
-using System;
 using System.Collections.Generic;
 
 namespace PackageDelivery.Application.Implementation.Implementation.Parameters
 {
     public class DocumentTypeImpApplication : IDocumentTypeApplication
     {
-        IDocumentTypeRepository _repository = new DocumentTypeImpRepository();
+        IDocumentTypeRepository _repository;
+        public DocumentTypeImpApplication(IDocumentTypeRepository repository)
+        {
+            this._repository = repository;
+        }
         public DocumentTypeDTO createRecord(DocumentTypeDTO record)
         {
             DocumentTypeApplicationMapper mapper = new DocumentTypeApplicationMapper();

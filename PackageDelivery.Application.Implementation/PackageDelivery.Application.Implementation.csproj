@@ -79,10 +79,6 @@
       <Project>{74484209-3bc0-4aa1-b3e1-6a571b7692a5}</Project>
       <Name>PackageDelivery.Repository.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PackageDelivery.Repository.Implementation\PackageDelivery.Repository.Implementation.csproj">
-      <Project>{7143e459-cee2-4b2d-8599-8e488fd69b4f}</Project>
-      <Name>PackageDelivery.Repository.Implementation</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />

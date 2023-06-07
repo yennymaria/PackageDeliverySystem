@@ -4,7 +4,7 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Agregar Historial Paquete</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>PackageHistoryModel</h4>
+    
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -40,27 +40,31 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Id_Package)
-        @Html.DropDownListFor(model => model.Id_Package, new SelectList(Model.PackageList, "Id", "Id"), new { @class = "form-control chosen-select-single", @id = "selPackage", data_placeholder = "-- Seleccione un paquete --" })
-        @Html.ValidationMessageFor(model => model.Id_Package, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Id_Warehouse)
-        @Html.DropDownListFor(model => model.Id_Warehouse, new SelectList(Model.WarehouseList, "Id", "Name"), new { @class = "form-control chosen-select-single", @id = "selWarehouse", data_placeholder = "-- Seleccione la bodega --" })
-        @Html.ValidationMessageFor(model => model.Id_Warehouse, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+        @Html.LabelFor(model => model.Id_Package, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Id_Package, new SelectList(Model.PackageList, "Id", "Id"), new { @class = "form-control chosen-select-single", @id = "selPackage", data_placeholder = "-- Seleccione un paquete --" })
+            @Html.ValidationMessageFor(model => model.Id_Package, "", new { @class = "text-danger" })
         </div>
     </div>
-</div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Id_Warehouse, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Id_Warehouse, new SelectList(Model.WarehouseList, "Id", "Name"), new { @class = "form-control chosen-select-single", @id = "selWarehouse", data_placeholder = "-- Seleccione la bodega --" })
+            @Html.ValidationMessageFor(model => model.Id_Warehouse, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Crear" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Volver", "Index")
 </div>
 
 @section Scripts {

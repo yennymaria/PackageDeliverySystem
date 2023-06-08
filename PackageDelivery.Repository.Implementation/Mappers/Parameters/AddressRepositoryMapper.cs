@@ -19,8 +19,8 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 Observations = input.Observaciones,
                 Id_Person = input.Id_Persona,
                 Id_City = input.Id_Municipio,
-                CityName = input.Municipio.Nombre,
-                PersonName = input.Persona.Documento
+                CityName = input.Municipio != null ? input.Municipio.Nombre : string.Empty,
+                PersonName = input.Persona != null ? input.Persona.Documento : string.Empty
             };
         }
 

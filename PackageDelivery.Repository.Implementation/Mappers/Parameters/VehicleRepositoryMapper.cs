@@ -13,7 +13,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 Id = input.id,
                 Plate = input.placa,
                 IdTransportType = (long)input.idTipoTransporte,
-                TransportTypeName = input.TipoTransporte.nombre
+                TransportTypeName = input.TipoTransporte != null ? input.TipoTransporte.nombre : string.Empty
             };
         }
 

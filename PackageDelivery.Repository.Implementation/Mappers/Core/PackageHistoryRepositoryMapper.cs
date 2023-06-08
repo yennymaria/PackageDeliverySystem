@@ -16,8 +16,9 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Core
                 Description = input.Descripcion,
                 Id_Package = input.Id_Paquete,
                 Id_Warehouse = input.Id_Bodega,
-                PackageName = input.Paquete.Id+"",
-                WarehouseName = input.Bodega.Nombre
+                PackageName = input.Paquete != null ? input.Paquete.Id + "" : string.Empty,
+                WarehouseName = input.Bodega != null ? input.Bodega.Nombre : string.Empty
+
             };
         }
 

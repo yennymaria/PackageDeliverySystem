@@ -20,7 +20,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 CellPhone = input.Telefono.ToString(),
                 Email = input.Correo,
                 Id_DocumentType = input.Id_TipoDocumento,
-                DocumentTypeName = input.TipoDocumento.Nombre
+                DocumentTypeName = input.TipoDocumento != null ? input.TipoDocumento.Nombre : string.Empty
             };
         }
 

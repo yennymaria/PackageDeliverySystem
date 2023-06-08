@@ -16,7 +16,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 Width = input.Ancho,
                 Height = input.Altura,
                 Id_Office = input.Id_Oficina,
-                OfficeName = input.Oficina.Nombre
+                OfficeName = input.Oficina != null ? input.Oficina.Nombre : string.Empty
             };
         }
 

@@ -13,7 +13,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 Id = input.Id,
                 Name = input.Nombre,
                 Id_Department = input.Id_Depto,
-                DepartmentName = input.Departamento.Nombre
+                DepartmentName = input.Departamento != null ? input.Departamento.Nombre : string.Empty
             };
         }
 

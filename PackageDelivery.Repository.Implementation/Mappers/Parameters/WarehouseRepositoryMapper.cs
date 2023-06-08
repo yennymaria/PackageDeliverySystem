@@ -18,7 +18,7 @@ namespace PackageDelivery.Repository.Implementation.Mappers.Parameters
                 Latitude = input.latitud,
                 Longitude = input.longitud,
                 Id_City = input.Id_Municipio,
-                CityName = input.Municipio.Nombre
+                CityName = input.Municipio != null ? input.Municipio.Nombre:string.Empty
             };
         }
 

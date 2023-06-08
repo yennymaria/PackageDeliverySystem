@@ -24,8 +24,9 @@ namespace PackageDelivery.Repository.Implementation.Parameters
                 Municipio dt = mapper.DbModelToDataBaseMapper(record);
                 db.Municipio.Add(dt);
                 db.SaveChanges();
-                return mapper.DataBaseToDbModelMapper(dt);
-
+                Municipio mu = db.Municipio.Find(dt.Id);
+                CityDbModel m = mapper.DataBaseToDbModelMapper(db.Municipio.Find(dt.Id));
+                return m;
             }
         }
 
